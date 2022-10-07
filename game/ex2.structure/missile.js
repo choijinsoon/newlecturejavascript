@@ -34,8 +34,9 @@ Missile.prototype = {
     update:function(){
         this.y -= this.speed;
         console.log(this.y);
-        if(this.y < 0)
-            this.onOutOfCanvas = function(){};
+        if(this.y <= 0)
+            this.onOutOfCanvas(Missile);
+        
     }
 };
 

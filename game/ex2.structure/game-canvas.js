@@ -55,17 +55,23 @@ GameCanvas.prototype = {
             case "ArrowDown" :
                 this.fighter.move("Down");
                 break;
-
+                
             case "Space" :
                 var missile = this.fighter.fire();
-                missile.onOutOfCanvas = function(){
-                    this.missiles.shift();
-                };
                 this.missiles.push(missile);
+                missile.onOutOfCanvas = function(missile){
+                    //var a = this.missiles.indexOf(missile);
+                    //this.missiles.splice(a, 1);
+                    console.log(missile);
+                    console.log(this.missiles);
+                    console.log("space")
+                    //this.missiles.shift();
+                };
+                
                 console.log(this.missiles);
                 
                 break;
-        }
+            }
     },
     keyUpHandler:function(e){
         switch(e.code){
@@ -73,39 +79,41 @@ GameCanvas.prototype = {
                 this.fighter.stop("Left");
                 break;
                 
-            case "ArrowRight" :
-                this.fighter.stop("Right");
-                break;
+                case "ArrowRight" :
+                    this.fighter.stop("Right");
+                    break;
                 
-            case "ArrowUp" :
-                this.fighter.stop("Up");
-                break;
-                
-            case "ArrowDown" :
-                this.fighter.stop("Down");
-                break;
-        }
-    },
-    run:function(){ //업데이트 엔진
-        //상태 변경
-        this.background.update();
-        this.fighter.update();
-        for(var m of this.missiles)
-            m.update();
-        //this.enemy.update();
-        
-        //그림 그리기
-        var ctx = this.obj.getContext("2d");
-        ctx.clearRect(0, 0, this.obj.width, this.obj.height);
-        this.background.draw(ctx);
-        for(var m of this.missiles){
-            m.draw(ctx);
-            // if (m.y < 0) this.missiles.onOutOfCanvas();
-            // if(m.y < 0)
+                    case "ArrowUp" :
+                        this.fighter.stop("Up");
+                        break;
+                        
+                        case "ArrowDown" :
+                            this.fighter.stop("Down");
+                            break;
+                        }
+                    },
+                    run:function(){ //업데이트 엔진
+                        //상태 변경
+                        this.background.update();
+                        this.fighter.update();
+                        for(var m of this.missiles)
+                        m.update();
+                        //this.enemy.update();
+                        
+                        //그림 그리기
+                        var ctx = this.obj.getContext("2d");
+                        ctx.clearRect(0, 0, this.obj.width, this.obj.height);
+                        this.background.draw(ctx);
+                        for(var m of this.missiles){
+                            //if(++this.spaceDelay%5 == 0 )
+                            m.draw(ctx);
+                            // if (m.y < 0) this.missiles.onOutOfCanvas();
+                            // if(m.y < 0)
             //     this.missiles.shift(m);
         }
         this.fighter.draw(ctx);
 
+        
         setTimeout(this.run.bind(this), 1000/60);
     }
 };
