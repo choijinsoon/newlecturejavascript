@@ -1,11 +1,12 @@
-function Missile(){
-    this.x = 0;
-    this.y = 0;
+function Missile(x, y){
+    this.x = x || 0;
+    this.y = y || 0;
     this.vx = 0;
     this.vx = 0;
     this.dx = 0;
     this.dy = 0;
-    this.speed = 1;
+    this.speed = 10;
+    this.onOutOfCanvas = null;
 
     this.imgIndex = 3;
     this.imgIndexDelay = 0;
@@ -16,7 +17,9 @@ function Missile(){
 
 Missile.prototype = {
     draw:function(ctx){
-        ctx.drawImage(this.img, 0, 0);
+        var x = this.x - this.img.width/2;
+        var y = this.y - this.img.height/2
+        ctx.drawImage(this.img, x, y);
     },
     move:function(x, y){
         this.dx = x;
@@ -29,13 +32,10 @@ Missile.prototype = {
         this.vy = (this.dy-this.y) / d*this.speed;
     },
     update:function(){
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if(this.dx-3 <= this.x && this.x <= this.dx+3){ //목적지에 도달한다면 오차범위 +-2px
-            this.vx = 0;
-            this.vy = 0;
-        }
+        this.y -= this.speed;
+        console.log(this.y);
+        if(this.y < 0)
+            this.onOutOfCanvas = function(){};
     }
 };
 
