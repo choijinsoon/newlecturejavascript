@@ -4,12 +4,18 @@ import Missile from "./missile.js";
 import Enemy from "./enemy.js";
 
 function GameCanvas(){
+    let enemy = new Enemy();
+    enemy.x = 30;
+    enemy.x++;
+    console.log(enemy.x);
+
     this.obj = document.querySelector("canvas");
     this.obj.focus();
     this.obj.width = 1000;
     this.obj.height = 700;
     this.fighter = new Fighter(this.obj.width/2-32,this.obj.height-32);
     this.background = new Background();
+
     this.missiles = [];
     this.maxDelay = 10;
     this.spaceDelay = 0;
@@ -66,14 +72,10 @@ GameCanvas.prototype = {
                     var missile = this.fighter.fire();
                     this.missiles.push(missile);
                     this.spaceDelay = 0;
-                    missile.onOutOfCanvas = function(missile){
-                    //     if(missile.y<=0)
-                    //         this.missiles.shift();
-                    //     console.log(missile);
-                    //     console.log(this.missiles);
-                    //     console.log("space")
-                    //this.missiles.shift();
-                    }
+                    // missile.onOutOfCanvas = function(missile){
+                    //     var mi = this.missiles.indexOf(missile);
+                    //     this.missiles.splice(mi, 1);
+                    // }
                 }
                     console.log(this.missiles.length);
                     
@@ -108,22 +110,22 @@ GameCanvas.prototype = {
         }
         this.enemyInterval++;
         this.enemyInterval %= Math.random(20)+40;
-
-
+        
+        
         //상태 변경
         this.spaceDelay++;
         this.background.update();
-        this.fighter.update();
         for(var m of this.missiles)
-        m.update();
-        //this.enemy.update();
+            m.update();
+        this.fighter.update();
+        for(var e of this.enemys)
+            e.update();
         
         //그림 그리기
         var ctx = this.obj.getContext("2d");
         ctx.clearRect(0, 0, this.obj.width, this.obj.height);
         this.background.draw(ctx);
         for(var m of this.missiles){
-
             if(m.y<0) {
                 var mi = this.missiles.indexOf(m);
                 this.missiles.splice(mi, 1);
@@ -131,8 +133,8 @@ GameCanvas.prototype = {
             m.draw(ctx);
         }
         this.fighter.draw(ctx);
-        //this.enemy.draw();
-
+        for(var e of this.enemys)
+            e.draw(ctx);
         
         setTimeout(this.run.bind(this), 1000/60);
     }
