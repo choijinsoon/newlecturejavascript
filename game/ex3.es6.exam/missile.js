@@ -1,4 +1,4 @@
-function Missile(x, y){
+export default function Missile(x, y){
     this.x = x || 0;
     this.y = y || 0;
     this.vx = 0;
@@ -30,11 +30,8 @@ Missile.prototype = {
         this.vy = (this.dy-this.y) / d*this.speed;
     },
     update:function(){
-        this.y -= this.speed;
-        //console.log(this.y);
-        //this.onOutOfCanvas(Missile);
+        this.x += this.vx;
+        this.y += this.vy;
         
     }
 };
-
-export default Missile;

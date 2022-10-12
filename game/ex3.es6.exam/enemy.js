@@ -40,21 +40,28 @@ export default class Enemy{
         let y = this.#y-32;
         ctx.drawImage(
             this.#img, 
-            this.#x, this.#y);
+            0, 0, 48, 64,
+            x, y, 48, 64);
     }
     move(x, y){
         this.#dx = x;
         this.#dy = y;
 
+        let w = this.#dx - this.#x;
+        let h = this.#dy - this.#y;
+        let d = Math.sqrt(w*w + h*h);
+        this.#vx = (this.#dx-this.#x) / d*this.#speed;
+        this.#vy = (this.#dy-this.#y) / d*this.#speed;
+
     }
     update(){
-        //this.#x += this.#speed;
-        this.#y += this.#speed;
+        this.#x += this.#vx*this.#speed;
+        this.#y += this.#vy*this.#speed;
 
         // if(this.#dx-2 <= this.#x && this.#x <= this.#dx+2){ //목적지에 도달한다면 오차범위 +-2px
         //     this.#x = 0;
         //     this.#y = 0;
-        // }
+    // }
 
     }
 }
