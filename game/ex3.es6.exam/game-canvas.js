@@ -57,10 +57,6 @@ GameCanvas.prototype = {
                     var missile = this.fighter.fire();
                     this.missiles.push(missile);
                     this.spaceDelay = 0;
-                    // missile.onOutOfCanvas = function(missile){
-                    //     var mi = this.missiles.indexOf(missile);
-                    //     this.missiles.splice(mi, 1);
-                    // }
                 }
                 break;
             }
@@ -88,26 +84,23 @@ GameCanvas.prototype = {
         //캔버스의 상태 변경
         if(this.enemyInterval == 0){
             var ex = Math.floor(Math.random()*this.obj.width);
-            var ey = Math.floor(Math.random()*this.obj.height);
+            //var ey = Math.floor(Math.random()*this.obj.height);
             
-            if( ex<10 || ex>this.obj.width-10 || ey<10 || ey>this.obj.height-10 ){
-                var enemy = new Enemy(ex, ey);
+            //if( ex<10 || ex>this.obj.width-10 || ey<10 || ey>this.obj.height-10 ){
+                var enemy = new Enemy(ex);
                 enemy.move(this.fighter.x, this.fighter.y);
                 this.enemies.push(enemy);
                 this.randAppearGap = Math.floor(Math.random()*5);
                 console.log("enemy");
-                
-            }
-            // console.log("x"+ex);
-            // console.log("y"+ey);
-            
+            //}
         }
-        //this.enemyInterval++;
-        //this.enemyInterval %= this.randAppearGap;
+        this.enemyInterval++;
+        this.enemyInterval %= this.randAppearGap+20;
         
         for (var e of this.enemies){
             // 적기가 나 따라옴
-            e.move(this.fighter.x, this.fighter.y);
+            //e.move(this.fighter.x, this.fighter.y);
+            //e.move(this.fighter.x, this.fighter.y);
 
             //적기가 나랑 부딪히면 터짐
             if (parseInt(e.x) > this.fighter.x-32 && parseInt(e.x) < this.fighter.x+32 &&
@@ -120,13 +113,20 @@ GameCanvas.prototype = {
         //미사일 적 맞추기
         for (var m of this.missiles){
             for (var e of this.enemies){
-                m.move(e.x, e.y);
+                //m.move(e.x, e.y);
                 if (parseInt(m.x) > parseInt(e.x)-32 && parseInt(m.x) < parseInt(e.x)+32 &&
                     parseInt(m.y) > parseInt(e.y)-5 && parseInt(m.y) < parseInt(e.y)+5){
                     var ei = this.enemies.indexOf(e);
                     var mi = this.missiles.indexOf(m);
                     this.enemies.splice(ei, 1);
                     this.missiles.splice(mi, 1);
+                    
+
+                    var ctx = this.obj.getContext("2d");
+                    var img = new Image();
+                    img.src = "image/bomb.jpg";
+                    ctx.drawImage(img,0,0,640/4,600/5,
+                    e.x, e.y, 100, 100);
                 }
             }
         }
@@ -159,5 +159,12 @@ GameCanvas.prototype = {
             e.draw(ctx);
         
         setTimeout(this.run.bind(this), 1000/60);
+        
+        this.drawScore();
+    },
+    drawScore:function() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Score: ", 8, 20);
     }
 };

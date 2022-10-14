@@ -2,6 +2,8 @@ import Fighter from "./fighter.js";
 import Background from "./background.js";
 import Missile from "./missile.js";
 import Enemy from "./enemy.js";
+import context from "./itemContext.js";
+
 
 function GameCanvas(){
     this.obj = document.querySelector("canvas");
@@ -18,6 +20,8 @@ function GameCanvas(){
     this.enemyInterval = 0;
     this.randAppearGap =0;
     
+    context.items.push(this.fighter);
+    
     var ctx = this.obj.getContext("2d");
     this.fighter.draw(ctx);
     
@@ -25,20 +29,7 @@ function GameCanvas(){
     //this.obj.onmousemove = this.clickHandler.bind(this);// this 출력 this = GameCanvas.canvas
     this.obj.onkeydown = this.keyDownHandler.bind(this);
     this.obj.onkeyup = this.keyUpHandler.bind(this);
-
-    //this.run = this.run.bind(this);
-
-    // var img = new Image();
-    // img.src = './image/pic1.png';
-    // ctx.drawImage(
-        //     img, 
-        //     0, 0, 300, 150,
-        //     0, 0, 300/2, 150/2);
-    // ctx.drawImage(
-        //     img, 
-        //     300, 0, 300, 150,
-        //     300/2, 150/2, 300/2, 150/2);         
-} //this = GameCanvas
+}
         
 GameCanvas.prototype = {
     clickHandler:function(e){ //상태 바꾸기
@@ -66,18 +57,9 @@ GameCanvas.prototype = {
                 if(this.spaceDelay > this.maxDelay){
                     var missile = this.fighter.fire();
                     this.missiles.push(missile);
-                    this.spaceDelay = 0;
-                    //missile.onOutOfCanvas = function(missile){
-                    //     if(missile.y<=0)
-                    //         this.missiles.shift();
-                    //     console.log(missile);
-                    //     console.log(this.missiles);
-                    //     console.log("space")
-                    //this.missiles.shift();
-                    //}
-                }
-                    console.log(this.missiles.length);
-                    
+                    context.items.push(missile);
+                    this.spaceDelay = 0;                    
+                }                    
                     break;
             }
     },
@@ -106,6 +88,7 @@ GameCanvas.prototype = {
             var enemy = new Enemy();
             //enemy.move(this.fighter.x, this.fighter.y);
             this.enemies.push(enemy);
+            context.items.push(enemy);
             this.randAppearGap = Math.floor(Math.random()*20);
         }
         this.enemyInterval++;
@@ -116,7 +99,6 @@ GameCanvas.prototype = {
                 var ei = this.enemies.indexOf(e);
                 this.enemies.splice(ei, 1);
             }
-            console.log(this.enemies.length);
         }
         
 
@@ -124,26 +106,30 @@ GameCanvas.prototype = {
         //상태 변경
         this.spaceDelay++;
         this.background.update();
-        this.fighter.update();
-        for(var m of this.missiles)
-            m.update();
-        for(var e of this.enemies)
-            e.update();
+        for(var item of context.items)
+            item.update();
+        // this.fighter.update();
+        // for(var m of this.missiles)
+        //     m.update();
+        // for(var e of this.enemies)
+        //     e.update();
         
         //그림 그리기
         var ctx = this.obj.getContext("2d");
         ctx.clearRect(0, 0, this.obj.width, this.obj.height);
         this.background.draw(ctx);
-        for(var m of this.missiles){
-            if(m.y<0) {
-                var mi = this.missiles.indexOf(m);
-                this.missiles.splice(mi, 1);
-            }
-            m.draw(ctx);
-        }
-        this.fighter.draw(ctx);
-        for(var e of this.enemies)
-                e.draw(ctx);
+        for(var item of context.items)
+            item.draw(ctx);
+        // for(var m of this.missiles){
+        //     if(m.y<0) {
+        //         var mi = this.missiles.indexOf(m);
+        //         this.missiles.splice(mi, 1);
+        //     }
+        //     m.draw(ctx);
+        // }
+        // this.fighter.draw(ctx);
+        // for(var e of this.enemies)
+        //         e.draw(ctx);
 
         setTimeout(this.run.bind(this), 1000/60);
     }

@@ -1,28 +1,31 @@
 import Missile from "./missile.js";
+import Item from "./item.js"
 
-function Fighter(x, y){ //생성자
-    this.x = x || 0; //현재 위치
-    this.y = y || 0;
-    this.vx = 0; //이동 단위
-    this.vy = 0;
-    this.dx = this.x; //목적지
-    this.dy = this.y;
-    this.speed = 3;
+export default class Fighter extends Item{
     
-    this.flagE = false;
-    this.flagW = false;
-    this.flagS = false;
-    this.flagN = false;
+    constructor(x, y){ //생성자
+        super();
+        //부모로 옮겨 놓음
+        // this.x = x || 0; //현재 위치
+        // this.y = y || 0;
+        this.vx = 0; //이동 단위
+        this.vy = 0;
+        this.dx = this.x; //목적지
+        this.dy = this.y;
+        this.speed = 3;
+        
+        this.flagE = false;
+        this.flagW = false;
+        this.flagS = false;
+        this.flagN = false;
 
-    this.imgIndex = 3;
-    this.imgIndexDelay = 0;
-    this.img = new Image();
-    this.img.src = 'image/fighter.png';
+        this.imgIndex = 3;
+        this.imgIndexDelay = 0;
+        this.img = new Image();
+        this.img.src = 'image/fighter.png';
     
-}
-
-Fighter.prototype = {
-    draw:function(ctx){ //key:value(함수 선언 가능)
+    }
+    draw(ctx){ //key:value(함수 선언 가능)
         var imgW = this.img.width/7/2;
         var imgH = this.img.height/2;
         var x = this.x - imgW;
@@ -31,8 +34,8 @@ Fighter.prototype = {
             this.img, 
             64*this.imgIndex, 0, 64, 64,
             x, y, 64, 64);
-    },
-    move:function(x, y){ //x, y를 중심으로 변경 후 this.x, this.y를 변경해야할수도있음
+    }
+    move(x, y){ //x, y를 중심으로 변경 후 this.x, this.y를 변경해야할수도있음
 
         if(arguments.length == 1){ //방향
             var dir = x;
@@ -72,8 +75,8 @@ Fighter.prototype = {
             this.vy = (this.dy-this.y) / d*this.speed;
         }
 
-    },
-    stop:function(x){
+    }
+    stop(x){
         switch(x) {
             case "Left":
                 this.flagW = false;
@@ -94,13 +97,14 @@ Fighter.prototype = {
                 //this.y += this.speed;
                 break;
         }
-    },
-    fire:function(){
+    }
+    fire(){
         return new Missile(this.x, this.y);
-    },
-    update:function(){ //모듈 애니메이션 현재 x,y 값을 단위벡터만큼 움직인다
-        //this.x += this.vx; //마우스로 이동할 때 사용
-        //this.y += this.vy;
+    }
+    update(){ //모듈 애니메이션 현재 x,y 값을 단위벡터만큼 움직인다
+        // this.x += this.vx; //마우스로 이동할 때 사용
+        // this.y += this.vy;
+        super.update();
 
         if(this.flagW == true && this.x > 32) //keydown 시 true, keyup 시 false 설정 true 일때 이동
             this.x -= this.speed;
@@ -134,9 +138,8 @@ Fighter.prototype = {
         //     this.vy = 0;
         // }
     }
-};
+}
 
-export default Fighter;
 
 //클릭 목적지 원점 조절
 //clearrect로 이미지 불안정

@@ -30,8 +30,8 @@ Missile.prototype = {
         this.vy = (this.dy-this.y) / d*this.speed;
     },
     update:function(){
-        this.x += this.vx;
-        this.y += this.vy;
+        //this.x += this.vx;
+        this.y -= this.speed;
         
     }
 };
