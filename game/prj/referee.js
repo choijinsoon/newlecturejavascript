@@ -1,4 +1,7 @@
+
 import Item from "./item.js";
+import Card from "./card.js";
+
 export default class Referee extends Item{
     constructor(x, y, c, a){
         super();
@@ -56,15 +59,17 @@ export default class Referee extends Item{
         let x = this.x-190/3/2;
         let y = this.y-300/3/2;
         if(this.#color == "Y")
-        ctx.drawImage(
-            this.#imgYellow, 
-            0, 0, 281, 452,
-            x, y, 190/4, 300/4);
+            ctx.drawImage(
+                this.#imgYellow, 
+                0, 0, 281, 452,
+                x, y, 190/4, 300/4);
         else if(this.#color == "R")
-        ctx.drawImage(
-            this.#imgRed, 
-            0, 0, 281, 452,
-            x, y, 190/4, 300/4);
+            ctx.drawImage(
+                this.#imgRed, 
+                0, 0, 281, 452,
+                x, y, 190/4, 300/4);
+        
+        
     }
     move(x, y){
         this.#dx = x;
@@ -77,6 +82,7 @@ export default class Referee extends Item{
         this.#vy = (this.#dy-this.y) / d*this.#speed;
     }
     update(){
+        super.update();
         this.y += this.#speed;
     }
 

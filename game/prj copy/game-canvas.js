@@ -116,7 +116,7 @@ export default class GameCanvas{
                 d.y > this.player.y-15 && d.y < this.player.y+15){ 
                 var di = this.defenders.indexOf(d);
                 this.defenders.splice(di, 1);
-                
+                this.player.myLife -= 1;
             }
         }
         for (var r of this.referees){
@@ -138,7 +138,6 @@ export default class GameCanvas{
                     d.life -= 1;
                     if(d.life == 0){
                         this.defenders.splice(di, 1);
-                        this.score++;
                         this.balls.splice(bi, 1);
                     }
                 }
@@ -147,8 +146,8 @@ export default class GameCanvas{
 
         for (var b of this.balls){
             for (var r of this.referees){
-                if (parseInt(b.x) > parseInt(r.x)-40 && parseInt(b.x) < parseInt(r.x)+40 &&
-                    parseInt(b.y) > parseInt(r.y)-15 && parseInt(b.y) < parseInt(r.y)+15){
+                if (b.x > r.x-40 && b.x < r.x+40 &&
+                    b.y > r.y-15 && b.y < r.y+15){
                     var ri = this.referees.indexOf(r);
                     var bi = this.balls.indexOf(b);
                     r.life -= 1;
@@ -160,8 +159,8 @@ export default class GameCanvas{
                             card.color = 1;
                         this.cards.push(card);
                         this.referees.splice(ri, 1);
-                        this.balls.splice(bi, 1);
                     }
+                    this.balls.splice(bi, 1);
                 }
             }
         }
@@ -170,7 +169,8 @@ export default class GameCanvas{
 
         //나와 카드 충돌 시
         for(var c of this.cards){
-            if(this.player.y > c.y-0 && this.player.y < c.y+80){ //this.player.y > c.y-10 && this.player.y < c.y+10
+            if(this.player.x > c.x-20 && this.player.x < c.x+20 &&
+                this.player.y > c.y-0 && this.player.y < c.y+80){ //this.player.y > c.y-10 && this.player.y < c.y+10
                 var ci = this.cards.indexOf(c);
                 if(c.color == 0)
                     this.score += 1;    
@@ -182,13 +182,14 @@ export default class GameCanvas{
 
         this.spaceDelay++;
         this.background.update();
+        this.player.update();
         for(var b of this.balls)
             b.update();
         for(var d of this.defenders)
             d.update();
         for(var c of this.cards)
             c.update();
-        for(var r of context.items)
+        for(var r of this.referees)
             r.update();
 
         //그림 그리기
@@ -205,7 +206,7 @@ export default class GameCanvas{
         this.player.draw(ctx);
         for(var d of this.defenders)
             d.draw(ctx);
-        for(var r of context.items)
+        for(var r of this.referees)
             r.draw(ctx);
         for(var c of this.cards)
             c.draw(ctx);

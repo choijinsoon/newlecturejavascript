@@ -21,19 +21,21 @@ export default class Fighter extends Item{
 
         this.imgIndex = 3;
         this.imgIndexDelay = 0;
-        this.img = new Image();
+        //this.img = new Image();
         this.img.src = 'image/fighter.png';
     
     }
     draw(ctx){ //key:value(함수 선언 가능)
-        var imgW = this.img.width/7/2;
-        var imgH = this.img.height/2;
-        var x = this.x - imgW;
-        var y = this.y - imgH;
+        var w = this.img.width/7;
+        var h = this.img.height;
+        var hw = w/2;
+        var hh = h/2;
+        var x = this.x - hw;
+        var y = this.y - hh;
         ctx.drawImage(
             this.img, 
-            64*this.imgIndex, 0, 64, 64,
-            x, y, 64, 64);
+            64*this.imgIndex, 0, w, h,
+            x, y, w, h);
     }
     move(x, y){ //x, y를 중심으로 변경 후 this.x, this.y를 변경해야할수도있음
 
@@ -137,6 +139,9 @@ export default class Fighter extends Item{
         //     this.vx = 0;
         //     this.vy = 0;
         // }
+    }
+    get width(){
+        return super.width/7;
     }
 }
 

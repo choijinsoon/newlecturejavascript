@@ -1,60 +1,33 @@
 import context from "./itemContext.js";
 import f1 from './testmodule.js';
 
-function getData(){
-    return {kor:10, eng:20, math:30};
-}
-function getList(){
-    let list = [];
-    let data = getData();
-    list.push(data);
-    return list;
-}
-
-let list = getList(); //동기
-console.log(list);
-
-console.log("작업완료");
-
-
-
-function getData(callback){
-    callback({kor:10, eng:20, math:30});
-}
-function getList(callback){
-    let list = [];
-    getData(function(data){
-        list.push(data);
-        callback(list);
-    });
-}
-
-getList()
-.then(function(list){
-    console.log(list);
-}); //비동기
-
-console.log("작업완료");
-
-
-
 function getData(callback){
     callback({kor:10, eng:20, math:30});
 }
 function getList(){
-    return new Promise(function(callback){
+    return new Promise(function(resolve, reject){
         let list = [];
         getData(function(data){
             list.push(data);
-            callback(list);
+
+            if(data.kor == undefined)
+                reject(1);
+
+            resolve(list);
         });
     });
 }
 
 getList()
-.then(function(list){
-    console.log(list);
-}); //비동기
+.then(list=>list[0], state=>{console.log(`오류코드 : ${state}`)})
+.then(exam=>{
+    exam.kor += 10;
+    exam.eng += 20;
+    return exam;
+})
+.then(exam=>{
+    console.log(exam);
+})
 
 console.log("작업완료");
 

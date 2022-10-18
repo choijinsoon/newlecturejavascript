@@ -13,8 +13,14 @@ export default class Enemy extends Item{
 
         this.#imgIndex = 3;
         this.#imgIndexDelay = 0;
-        this.#img = new Image();
-        this.#img.src = 'image/enemy.png';
+        //this.#img = new Image();
+        this.img.src = 'image/enemy.png';
+        this.imgExp1.src = 'image/explosion.jpg';
+
+        this.#ex = 0; //colision 좌표
+        this.#ey = 0;
+
+
     }
     // get x(){
     //     return this.#x;
@@ -31,23 +37,40 @@ export default class Enemy extends Item{
     draw(ctx){
         let x = this.x-24;
         let y = this.y-32;
-        ctx.drawImage(
-            this.#img, 
-            this.x, this.y);
+        if(!this.isHit)
+            ctx.drawImage(
+                this.img, 
+                this.x, this.y);
+        if(this.isHit)
+            ctx.drawImage(
+                this.imgExp1, 
+                160*this.#ex, 120*this.#ey, 160, 120, 
+                this.x-this.width, this.y-this.height, 160, 120);
     }
     move(x, y){
-        this.#dx = x;
-        this.#dy = y;
-
+            this.#dx = x;
+            this.#dy = y;
+            
     }
     update(){
-        //this.#x += this.#speed;
-        this.y += this.#speed;
+        super.update(); 
+        //this.x += this.#speed;
+            this.y += this.#speed;
+
+        if(this.isHit)
+            if(++this.#imgIndexDelay%2 == 0)
+                if(++this.#ex > 3){
+                    this.#ey++;
+                    this.#ex = 0;
+                }
+            
+
 
         // if(this.#dx-2 <= this.#x && this.#x <= this.#dx+2){ //목적지에 도달한다면 오차범위 +-2px
         //     this.#x = 0;
         //     this.#y = 0;
         // }
+
 
     }
     
@@ -58,6 +81,7 @@ export default class Enemy extends Item{
     #speed
     #imgIndex;
     #imgIndexDelay;
-    #img;
+    #ex;
+    #ey;
 }
 

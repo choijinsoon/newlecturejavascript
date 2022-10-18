@@ -11,6 +11,8 @@ function GameCanvas(){
     this.obj.width = 1000;
     this.obj.height = 700;
     this.fighter = new Fighter(this.obj.width/2-32,this.obj.height-32);
+    context.items.push(this.fighter);
+
     this.background = new Background();
     this.missiles = [];
     this.maxDelay = 10;
@@ -20,7 +22,6 @@ function GameCanvas(){
     this.enemyInterval = 0;
     this.randAppearGap =0;
     
-    context.items.push(this.fighter);
     
     var ctx = this.obj.getContext("2d");
     this.fighter.draw(ctx);
@@ -56,7 +57,7 @@ GameCanvas.prototype = {
             case "Space" :
                 if(this.spaceDelay > this.maxDelay){
                     var missile = this.fighter.fire();
-                    this.missiles.push(missile);
+                    //this.missiles.push(missile);
                     context.items.push(missile);
                     this.spaceDelay = 0;                    
                 }                    
@@ -87,12 +88,12 @@ GameCanvas.prototype = {
         if(this.enemyInterval == 0){
             var enemy = new Enemy();
             //enemy.move(this.fighter.x, this.fighter.y);
-            this.enemies.push(enemy);
+            //this.enemies.push(enemy);
             context.items.push(enemy);
             this.randAppearGap = Math.floor(Math.random()*20);
         }
         this.enemyInterval++;
-        this.enemyInterval %= this.randAppearGap + 30;
+        this.enemyInterval %= this.randAppearGap + 90;
 
         for(var e of this.enemies){
             if(e.y>700){               
