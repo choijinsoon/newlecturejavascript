@@ -27,14 +27,11 @@ export default class Item{
             //나와 items 내 있는 다른 item 과의 거리 
             let d = Math.sqrt((item.x-this.#x)*(item.x-this.#x)+(item.y-this.#y)*(item.y-this.#y));
             let sumR = this.width/2 + item.width/2; //getter 사용
-
             if(d <= sumR) {
                 //console.log("충돌검사");
-                this.hit();
+                this.hit();                
             } 
-        
         }
-
     }
     draw(ctx){
 
@@ -68,9 +65,6 @@ export default class Item{
     }
     get isHit(){
         return this.#isHit;
-    }
-    set isHit(isHit){
-        this.#isHit = isHit;
     }
     get width(){
         return this.#img.width;

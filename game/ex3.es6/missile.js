@@ -16,10 +16,20 @@ export default class Missile extends Item{
         this.img.src = 'image/missile.png';
 
     }
+    deleteItem(){
+
+    }
     draw(ctx){
         var x = this.x - this.img.width/2;
         var y = this.y - this.img.height/2
-        ctx.drawImage(this.img, x, y);
+        console.log("m"+this.isHit)
+        if(!this.isHit)
+            ctx.drawImage(this.img, x, y);
+        else{
+            this.y == 800;
+            this.speed == 0;
+
+        }
     }
     move(x, y){
         this.dx = x;
@@ -33,6 +43,9 @@ export default class Missile extends Item{
     }
     update(){
         this.y -= this.speed;
+        
+        if(this.y < 0)
+            this.deleteItem();
         //console.log(this.y);
         //this.onOutOfCanvas(Missile);
         

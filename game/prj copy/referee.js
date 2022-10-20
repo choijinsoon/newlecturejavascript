@@ -10,7 +10,7 @@ export default class Referee extends Item{
         this.vy = 0;
         this.dx = this.x; 
         this.dy = this.y;
-        this.speed = 2;
+        this.speed = 1;
 
         this.imgIndex = 3;
         this.imgIndexDelay = 0;
@@ -62,6 +62,13 @@ export default class Referee extends Item{
     }
     update(){
         super.update();
+        if(this.color == "Y"){
+            this.y += this.speed;
+        }
+        
+        if(this.color == "R"){
+            this.y += this.speed*1.5;
+        }
         this.y += this.speed;
         if(++this.imgIndexDelay%10000 == 0)
             this.speed += 2;

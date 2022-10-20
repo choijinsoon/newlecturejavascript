@@ -6,7 +6,7 @@ export default class Defender{
         this.vy = 0;
         this.dx = this.x; 
         this.dy = this.y;
-        this.speed = 3;
+        this.speed = 2;
 
         this.imgIndex = 3;
         this.imgIndexDelay = 0;
@@ -18,14 +18,17 @@ export default class Defender{
     draw(ctx){
         let x = this.x-190/3/2;
         let y = this.y-300/3/2;
-        ctx.drawImage(
-            this.img, 
-            0, 0, 190, 300,
-            x, y, 190/4, 300/4);
+        if(this.imgIndexDelay % 5 == 0){
+            ctx.drawImage(
+                this.img, 
+                0, 0, 190, 300,
+                x, y, 190/3, 300/3);
+
+        }
     }
     move(x, y){
         this.dx = x;
-        this.dy = y;
+        this.dy = y; 
 
         let w = this.dx - this.x;
         let h = this.dy - this.y;

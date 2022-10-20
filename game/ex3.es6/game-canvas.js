@@ -103,6 +103,15 @@ GameCanvas.prototype = {
         }
         
 
+        for(var item of context.items){
+            item.deleteItem = function(){
+                let ii = context.items.indexOf(item);
+                context.items.splice(ii, 1);
+
+            }            
+        }
+        console.log(context.items.length)
+
 
         //상태 변경
         this.spaceDelay++;

@@ -14,11 +14,14 @@ export default class Enemy extends Item{
         this.#imgIndex = 3;
         this.#imgIndexDelay = 0;
         //this.#img = new Image();
+        this.img = document.getElementById("enemy");
         this.img.src = 'image/enemy.png';
         this.imgExp1.src = 'image/explosion.jpg';
 
         this.#ex = 0; //colision 좌표
         this.#ey = 0;
+
+        console.log("w"+ this.img.width);
 
 
     }
@@ -34,9 +37,13 @@ export default class Enemy extends Item{
     // set y(y){
     //     this.#y = y;
     // }
+    deleteItem(){
+
+    }
     draw(ctx){
         let x = this.x-24;
-        let y = this.y-32;
+        let y = this.y-32;    
+        console.log(this.isHit)    
         if(!this.isHit)
             ctx.drawImage(
                 this.img, 
@@ -63,6 +70,9 @@ export default class Enemy extends Item{
                     this.#ey++;
                     this.#ex = 0;
                 }
+        
+        if(this.y > 700)
+            this.deleteItem();
             
 
 
